@@ -10,8 +10,12 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import confusion_matrix, precision_score, f1_score, recall_score
 sns.set(style='white')
 
-# Load Data
-dataset = pd.read_csv('iris.csv')
+# Load Data directly from sklearn (no CSV required)
+from sklearn.datasets import load_iris
+iris = load_iris(as_frame=True)
+
+dataset = iris.frame   # DataFrame with features + target
+dataset.columns = [colname.strip(' (cm)').replace(" ", "_") for colname in dataset.columns.tolist()]
 
 # Feature names (Ensure no extra spaces or parentheses)
 dataset.columns = [colname.strip(' (cm)').replace(" ", "_") for colname in dataset.columns.tolist()]
@@ -135,3 +139,4 @@ with open('scores.txt', "w") as score:
     score.write("F1 Score: %2.1f%%\n" % f1_lr)
     score.write("Recall Score: %2.1f%%\n" % recall_lr)
     score.write("Precision Score: %2.1f%%\n" % prec_lr)
+
